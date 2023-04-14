@@ -1,6 +1,7 @@
 import React from "react";
 import {useFormik} from "formik";
 import * as Yup from "yup";
+import axios, {HttpStatusCode} from "axios";
 
 const LoginPage = () => {
     const formik = useFormik({
@@ -15,11 +16,14 @@ const LoginPage = () => {
                 .required("必填"),
         }),
         onSubmit: async (values) => {
-            const response = await axios.post("http://your-api.com/login", {
+            const response = await axios.post("accounts:login", {
                 account: values.email,
                 password: values.password,
             });
-            console.log(values); // 在這裡可以進行表單的提交
+            if (response.status === HttpStatusCode.Ok) {
+                axios.defaults.headers.common['Authorization'] = response.data.token;
+                window.location.href = "/dashboard";
+            }
         },
     });
 
