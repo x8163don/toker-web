@@ -15,13 +15,17 @@ const LoginPage = () => {
             password: Yup.string().required("請填寫密碼"),
         }),
         onSubmit: async (values) => {
-            const response = await axios.post("accounts:login", {
-                account: values.email,
-                password: values.password,
-            });
-            if (response.status === HttpStatusCode.Ok) {
-                axios.defaults.headers.common['Authorization'] = response.data.token;
-                window.location.href = "/dashboard";
+            try {
+                const response = await axios.post("accounts:login", {
+                    account: values.email,
+                    password: values.password,
+                });
+                if (response.status === HttpStatusCode.Ok) {
+                    axios.defaults.headers.common['Authorization'] = response.data.token;
+                    window.location.href = "/dashboard";
+                }
+            } catch (e) {
+                console.log(e.response.data.message);
             }
         },
     });
@@ -49,7 +53,8 @@ const LoginPage = () => {
                                 value={formik.values.email}
                                 onBlur={formik.handleBlur}
                             />
-                            <label className="mt-1 h-1 text-sm font-medium text-red-700 block mb-2">{formik.touched.email && formik.errors.email ? (
+                            <label
+                                className="mt-1 h-1 text-sm font-medium text-red-600 block mb-2">{formik.touched.email && formik.errors.email ? (
                                 <div>• {formik.errors.email}</div>) : <div></div>}
                             </label>
                         </div>
@@ -62,7 +67,7 @@ const LoginPage = () => {
                                    onChange={formik.handleChange}
                                    value={formik.values.password}
                                    onBlur={formik.handleBlur}/>
-                            <label className="mt-1 h-1 text-sm font-medium text-red-700 block mb-2">
+                            <label className="mt-1 h-1 text-sm font-medium text-red-600 block mb-2">
                                 {formik.touched.password && formik.errors.password ? (
                                     <div>• {formik.errors.password}</div>) : <div></div>}
                             </label>
