@@ -1,10 +1,14 @@
-import React from "react";
+import React, {useState} from "react";
 import {useFormik} from "formik";
 import * as Yup from "yup";
 import axios, {HttpStatusCode} from "axios";
 import {Link} from "react-router-dom";
+import {Alert} from "flowbite-react";
 
 const LoginPage = () => {
+    const [isShowErrorAlert, setIsShowErrorAlert] = useState(false)
+    const [errorMessage, setErrorMessage] = useState("")
+
     const formik = useFormik({
         initialValues: {
             email: "",
@@ -25,7 +29,11 @@ const LoginPage = () => {
                     window.location.href = "/dashboard";
                 }
             } catch (e) {
-                console.log(e.response.data.message);
+                setErrorMessage(e.response.data.message)
+                setIsShowErrorAlert(true)
+                setTimeout(() => {
+                    setIsShowErrorAlert(false)
+                }, 3000)
             }
         },
     });
@@ -78,6 +86,7 @@ const LoginPage = () => {
                     </form>
                 </div>
             </div>
+            {isShowErrorAlert ? <Alert color="failure" className="fixed flex"> <span>{errorMessage}</span> </Alert> : null}
         </div>);
 };
 
