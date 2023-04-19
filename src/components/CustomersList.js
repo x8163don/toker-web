@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useTable } from 'react-table';
 
-const CustomerTable = () => {
+const CustomerList = () => {
     const [customers, setCustomers] = useState([]);
 
     useEffect(() => {
@@ -29,12 +29,12 @@ const CustomerTable = () => {
     const columns = React.useMemo(
         () => [
             {
-                Header: 'ID',
-                accessor: 'id',
-            },
-            {
                 Header: '姓名',
                 accessor: 'name',
+            },
+            {
+                Header: '',
+                accessor: 'avatar',
             },
             {
                 Header: '電子郵件',
@@ -88,4 +88,4 @@ const CustomerTable = () => {
     );
 }
 
-export default CustomerTable;
+export default CustomerList;
