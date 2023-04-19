@@ -26,7 +26,7 @@ const LoginPage = () => {
                 });
                 if (response.status === HttpStatusCode.Ok) {
                     axios.defaults.headers.common['Authorization'] = response.data.token;
-                    window.location.href = "/dashboard";
+                    window.location.href = "/customers";
                 }
             } catch (e) {
                 setErrorMessage(e.response.data.message)

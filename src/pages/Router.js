@@ -2,6 +2,7 @@ import {createBrowserRouter} from "react-router-dom";
 import HomePage from "./Home";
 import LoginPage from "./Login";
 import DashboardPage from "./Dashboard";
+import CustomersPage from "./Customers";
 import SideMenuLayout from "../layouts/SideMenuLayout";
 
 export const router = createBrowserRouter([
@@ -12,6 +13,13 @@ export const router = createBrowserRouter([
         element: <SideMenuLayout/>,
         children: [
             {path: '', element: <DashboardPage/>},
+        ]
+    },
+    {
+        path: '/customers',
+        element: <SideMenuLayout/>,
+        children: [
+            {path: '', element: <CustomersPage/>},
         ]
     },
 ])
