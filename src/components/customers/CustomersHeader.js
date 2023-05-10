@@ -1,10 +1,10 @@
 import React from 'react';
 import {Button} from 'flowbite-react';
 
-const CustomersHeader = () => {
+const CustomersHeader = (props) => {
     return (
         <>
-            <Button color="success">新增客戶</Button>
+            <Button color="success" onClick={props.onClick}>新增客戶</Button>
         </>
     )
 }
