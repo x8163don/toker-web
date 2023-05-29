@@ -120,7 +120,7 @@ const AddNewCustomerModel = (props) => {
             newCustomerData.phones = nonEmptyPhone
         }
 
-        const nonEmptyAddress = addresses.filter(address => address.address !== "" && address.city !== "" && address.dist != "")
+        const nonEmptyAddress = addresses.filter(address => address.address !== "" && address.city !== "" && address.dist !== "")
         if (nonEmptyAddress.length > 0) {
             newCustomerData.addresses = nonEmptyAddress
         }
@@ -159,13 +159,13 @@ const AddNewCustomerModel = (props) => {
                         <label htmlFor="gender"
                                className="text-sm font-medium text-gray-900 block mb-2">性別</label>
                         <Button.Group>
-                            <Button gradientDuoTone={gender == "Male" ? "cyanToBlue" : ""}
+                            <Button gradientDuoTone={gender === "Male" ? "cyanToBlue" : ""}
                                     color="gray"
                                     onClick={() => setGender("Male")}>
                                 男
                             </Button>
                             <Button
-                                gradientDuoTone={gender == "Female" ? "pinkToOrange" : ""}
+                                gradientDuoTone={gender === "Female" ? "pinkToOrange" : ""}
                                 color="gray"
                                 onClick={() => setGender("Female")}>
                                 女
