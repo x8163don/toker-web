@@ -3,6 +3,7 @@ import CustomersList from "../components/customers/CustomersList";
 import CustomersHeader from "../components/customers/CustomersHeader";
 import AddNewCustomerModel from "../components/customers/AddNewCustomerModel";
 import axios from "axios";
+import {Modal} from "flowbite-react";
 
 function CustomersPage() {
 
@@ -22,11 +23,19 @@ function CustomersPage() {
         <div className="w-full">
             <CustomersHeader onClick={() => setIsShowNewCustomerModel(!isShowNewCustomerModel)}/>
             <CustomersList/>
-            <AddNewCustomerModel
-                isShow={isShowNewCustomerModel}
-                onModelClose={() => setIsShowNewCustomerModel(false)}
-                onSaveCustomer={saveCustomerHandler}
-            />
+
+            <Modal
+                show={isShowNewCustomerModel}
+                onClose={() => setIsShowNewCustomerModel(false)}
+            >
+                <Modal.Header>新增客戶</Modal.Header>
+                <Modal.Body>
+                    <AddNewCustomerModel
+                        onSaveCustomer={saveCustomerHandler}
+                        onClose={() => setIsShowNewCustomerModel(false)}
+                    />
+                </Modal.Body>
+            </Modal>
         </div>
     )
 }

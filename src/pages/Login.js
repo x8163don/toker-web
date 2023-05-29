@@ -26,6 +26,8 @@ const LoginPage = () => {
                 });
                 if (response.status === HttpStatusCode.Ok) {
                     axios.defaults.headers.common['Authorization'] = response.data.token;
+                    axios.defaults.headers.post['Authorization'] = response.data.token;
+                    localStorage.setItem("token", response.data.token);
                     window.location.href = "/customers";
                 }
             } catch (e) {
