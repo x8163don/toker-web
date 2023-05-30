@@ -1,28 +1,51 @@
-import React, {useState} from "react";
+import React, {useEffect, useState} from "react";
 import CustomersList from "../components/customers/CustomersList";
 import CustomersHeader from "../components/customers/CustomersHeader";
+import EditCustomer from "../components/customers/EditCustomer";
 import AddNewCustomerModel from "../components/customers/AddNewCustomerModel";
-import axios from "axios";
+import {deleteCustomer, getCustomers} from "../data/customer/customer";
 import {Modal} from "flowbite-react";
 
 function CustomersPage() {
 
     const [isShowNewCustomerModel, setIsShowNewCustomerModel] = useState(false);
+    const [customers, setCustomers] = useState([]);
+    const [selectedCustomer, setSelectedCustomer] = useState(null);
 
-    const saveCustomerHandler = (enteredCustomerData) => {
-        axios.post("/customer", enteredCustomerData)
-            .then(response => {
-                console.log(response);
+    useEffect(() => {
+        getCustomers().then(r => {
+            setCustomers(r.customers);
+        })
+    }, [])
+
+    const onSaveCustomerHandler = () => {
+        getCustomers().then(r => {
+            setCustomers(r.customers);
+        })
+    }
+
+    function deleteCustomerHandler(id) {
+        deleteCustomer(id).then(r => {
+            setCustomers(prevState => {
+                return prevState.filter(c => c.id !== id);
             })
-            .catch(error => {
-                console.log(error);
-            })
+        })
+    }
+
+    function selectCustomerHandler(customerId) {
+        const customer = customers.find(c => c.id === customerId);
+        setSelectedCustomer(customer);
     }
 
     return (
         <div className="w-full">
             <CustomersHeader onClick={() => setIsShowNewCustomerModel(!isShowNewCustomerModel)}/>
-            <CustomersList/>
+
+            <CustomersList customers={customers}
+                           onSelectCustomer={selectCustomerHandler}
+                           onDeleteCustomer={deleteCustomerHandler}/>
+
+            <EditCustomer customer={selectedCustomer}/>
 
             <Modal
                 show={isShowNewCustomerModel}
@@ -31,7 +54,8 @@ function CustomersPage() {
                 <Modal.Header>新增客戶</Modal.Header>
                 <Modal.Body>
                     <AddNewCustomerModel
-                        onSaveCustomer={saveCustomerHandler}
+                        key="new-customer"
+                        onSaveCustomer={onSaveCustomerHandler}
                         onClose={() => setIsShowNewCustomerModel(false)}
                     />
                 </Modal.Body>

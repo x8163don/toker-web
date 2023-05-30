@@ -1,24 +1,8 @@
-import React, {useState, useEffect} from 'react';
+import React from 'react';
 import {Table} from 'flowbite-react';
-import {deleteCustomer, getCustomers} from "../../data/customer/customer";
 
-const CustomersList = () => {
-    const [customers, setCustomers] = useState([]);
+const CustomersList = (props) => {
 
-    useEffect(() => {
-        getCustomers().then(r => {
-            setCustomers(r.customers);
-            console.log(r.customers);
-        });
-    }, []);
-
-    function deleteCustomerHandler(id) {
-        deleteCustomer(id).then(r => {
-            setCustomers(prevState => {
-                return prevState.filter(c => c.id !== id);
-            })
-        })
-    }
 
     return (
         <Table striped hoverable>
@@ -41,7 +25,7 @@ const CustomersList = () => {
             </Table.Head>
             <Table.Body className="divide-y">
                 {
-                    customers.map(customer => (
+                    props.customers.map(customer => (
                         <Table.Row key={customer.id} className="bg-white dark:border-gray-700 dark:bg-gray-800">
                             <Table.Cell className="whitespace-nowrap font-medium text-gray-900 dark:text-white">
                                 {customer.name}
@@ -53,11 +37,16 @@ const CustomersList = () => {
                                 {!!customer.email ? customer.email.email : ""}
                             </Table.Cell>
                             <Table.Cell>
-                                {customer.phone}
+                                {customer.phones.length > 0 ?
+                                    <a className="cursor-pointer font-medium hover:underline"
+                                       href={`tel:` + customer.phones[0].phone}>{customer.phones[0].phone}</a> : ""}
                             </Table.Cell>
                             <Table.Cell>
                                 <a
                                     className="font-medium cursor-pointer text-cyan-600 hover:underline dark:text-cyan-500"
+                                    onClick={() => {
+                                        props.onSelectCustomer(customer.id);
+                                    }}
                                 >
                                     編輯
                                 </a>
@@ -65,7 +54,7 @@ const CustomersList = () => {
                                 <a
                                     className="font-medium cursor-pointer text-red-600 hover:underline dark:text-red-500"
                                     onClick={() => {
-                                        deleteCustomerHandler(customer.id);
+                                        props.onDeleteCustomer(customer.id);
                                     }}
                                 >
                                     刪除

@@ -13,7 +13,7 @@ const AddNewCustomerModel = (props) => {
     const [birthday, setBirthday] = useState("")
     const [emails, setEmail] = useState([])
     const [phones, setPhones] = useState([{alias: phoneAliases[0], phone: ""}])
-    const [addresses, setAddresses] = useState([{alias: addressAliases[0], city: "", dist: "", address: ""}])
+    const [addresses, setAddresses] = useState([{alias: addressAliases[0], city: "", district: "", road: ""}])
 
     const addPhoneHandler = () => {
         setPhones((prevState) => {
@@ -53,7 +53,7 @@ const AddNewCustomerModel = (props) => {
             const selectedAlias = prevState.map(address => address.alias)
             const diff = addressAliases.filter(alias => !selectedAlias.includes(alias))
             const nextAlias = diff.length > 0 ? diff[0] : addressAliases[0]
-            return [...prevState, {alias: nextAlias, city: "", dist: "", address: ""}]
+            return [...prevState, {alias: nextAlias, city: "", district: "", road: ""}]
         })
     }
 
@@ -85,7 +85,7 @@ const AddNewCustomerModel = (props) => {
     const changeDistrictHandler = (dist, index) => {
         setAddresses((prevState) => {
             const nextState = [...prevState]
-            nextState[index].dist = dist
+            nextState[index].district = dist
             return nextState
         })
     }
@@ -93,7 +93,7 @@ const AddNewCustomerModel = (props) => {
     const changeAddressHandler = (address, index) => {
         setAddresses((prevState) => {
             const nextState = [...prevState]
-            nextState[index].address = address
+            nextState[index].road = address
             return nextState
         })
     }
@@ -120,7 +120,7 @@ const AddNewCustomerModel = (props) => {
             newCustomerData.phones = nonEmptyPhone
         }
 
-        const nonEmptyAddress = addresses.filter(address => address.address !== "" && address.city !== "" && address.dist !== "")
+        const nonEmptyAddress = addresses.filter(address => address.road !== "" && address.city !== "" && address.district !== "")
         if (nonEmptyAddress.length > 0) {
             newCustomerData.addresses = nonEmptyAddress
         }
@@ -133,7 +133,7 @@ const AddNewCustomerModel = (props) => {
                 setBirthday("")
                 setEmail([])
                 setPhones([{alias: phoneAliases[0], phone: ""}])
-                setAddresses([{alias: addressAliases[0], city: "", dist: "", address: ""}])
+                setAddresses([{alias: addressAliases[0], city: "", district: "", road: ""}])
                 props.onSaveCustomer()
                 props.onClose()
             })
@@ -276,7 +276,7 @@ const AddNewCustomerModel = (props) => {
                                            className="ml-2 mr-2 shadow-sm bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-cyan-600 focus:border-cyan-600 block w-24 p-2.5"
                                            list="dist-list"
                                            placeholder="地區"
-                                           value={address.dist}
+                                           value={address.district}
                                            onChange={(e) => {
                                                changeDistrictHandler(e.target.value, index)
                                            }}
@@ -292,7 +292,7 @@ const AddNewCustomerModel = (props) => {
                                     <input type="text"
                                            placeholder="街道, 巷弄, 門號, 樓層"
                                            className="ml-2 mr-2 shadow-sm bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-cyan-600 focus:border-cyan-600 block w-full p-2.5"
-                                           value={address.address}
+                                           value={address.road}
                                            onChange={(e) => {
                                                changeAddressHandler(e.target.value, index)
                                            }}
