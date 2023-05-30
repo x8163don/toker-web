@@ -35,7 +35,7 @@ const AddNewCustomerModel = (props) => {
     const changePhoneHandler = (i, number) => {
         setPhones((prevState) => {
             const nextState = [...prevState]
-            nextState[i].number = number
+            nextState[i].phone = number
             return nextState
         })
     }

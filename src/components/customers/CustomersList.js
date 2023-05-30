@@ -1,91 +1,82 @@
-import React, { useState, useEffect } from 'react';
-import { useTable } from 'react-table';
+import React, {useState, useEffect} from 'react';
+import {Table} from 'flowbite-react';
+import {deleteCustomer, getCustomers} from "../../data/customer/customer";
 
-const CustomerList = () => {
+const CustomersList = () => {
     const [customers, setCustomers] = useState([]);
 
     useEffect(() => {
-        const fakeCustomers = [
-            { id: 1, name: 'John Doe', email: 'john@example.com', phone: '123456789' },
-            { id: 2, name: 'Jane Smith', email: 'jane@example.com', phone: '987654321' },
-        ];
-
-        setCustomers(fakeCustomers);
+        getCustomers().then(r => {
+            setCustomers(r.customers);
+            console.log(r.customers);
+        });
     }, []);
 
-    const data = React.useMemo(
-        () =>
-            customers.map((customer) => ({
-                ...customer,
-                action: (
-                    <button type="button" onClick={() => handleEdit(customer.id)}>
-                        編輯
-                    </button>
-                ),
-            })),
-        [customers]
-    );
-
-    const columns = React.useMemo(
-        () => [
-            {
-                Header: '姓名',
-                accessor: 'name',
-            },
-            {
-                Header: '',
-                accessor: 'avatar',
-            },
-            {
-                Header: '電子郵件',
-                accessor: 'email',
-            },
-            {
-                Header: '電話',
-                accessor: 'phone',
-            },
-            {
-                Header: '操作',
-                accessor: 'action',
-            },
-        ],
-        []
-    );
-
-    const tableInstance = useTable({ columns, data });
-
-    const { getTableProps, getTableBodyProps, headerGroups, rows, prepareRow } = tableInstance;
-
-    const handleEdit = (id) => {
-        // 在這裡實作編輯客戶的功能，例如彈出編輯視窗等等
-        // ...
-    };
+    function deleteCustomerHandler(id) {
+        deleteCustomer(id).then(r => {
+            setCustomers(prevState => {
+                return prevState.filter(c => c.id !== id);
+            })
+        })
+    }
 
     return (
-        <table className="table-fixed min-w-full divide-y divide-gray-200" {...getTableProps()}>
-            <thead className="bg-gray-100">
-            {headerGroups.map(headerGroup => (
-                <tr {...headerGroup.getHeaderGroupProps()}>
-                    {headerGroup.headers.map(column => (
-                        <th scope="col" className="p-4 text-left text-xs font-medium text-gray-500 uppercase" {...column.getHeaderProps()}>{column.render('Header')}</th>
-                    ))}
-                </tr>
-            ))}
-            </thead>
-            <tbody className="bg-white divide-y divide-gray-200" {...getTableBodyProps()}>
-            {rows.map((row, i) => {
-                prepareRow(row);
-                return (
-                    <tr className="hover:bg-gray-100" {...row.getRowProps()}>
-                        {row.cells.map(cell => (
-                            <td className="p-4 w-4 text-base font-semibold text-gray-900" {...cell.getCellProps()}>{cell.render('Cell')}</td>
-                        ))}
-                    </tr>
-                );
-            })}
-            </tbody>
-        </table>
+        <Table striped hoverable>
+            <Table.Head>
+                <Table.HeadCell>
+                    姓名
+                </Table.HeadCell>
+                <Table.HeadCell>
+                    頭像
+                </Table.HeadCell>
+                <Table.HeadCell>
+                    Email
+                </Table.HeadCell>
+                <Table.HeadCell>
+                    電話
+                </Table.HeadCell>
+                <Table.HeadCell>
+                    操作
+                </Table.HeadCell>
+            </Table.Head>
+            <Table.Body className="divide-y">
+                {
+                    customers.map(customer => (
+                        <Table.Row key={customer.id} className="bg-white dark:border-gray-700 dark:bg-gray-800">
+                            <Table.Cell className="whitespace-nowrap font-medium text-gray-900 dark:text-white">
+                                {customer.name}
+                            </Table.Cell>
+                            <Table.Cell>
+                                {customer.avatar}
+                            </Table.Cell>
+                            <Table.Cell>
+                                {!!customer.email ? customer.email.email : ""}
+                            </Table.Cell>
+                            <Table.Cell>
+                                {customer.phone}
+                            </Table.Cell>
+                            <Table.Cell>
+                                <a
+                                    className="font-medium cursor-pointer text-cyan-600 hover:underline dark:text-cyan-500"
+                                >
+                                    編輯
+                                </a>
+                                |
+                                <a
+                                    className="font-medium cursor-pointer text-red-600 hover:underline dark:text-red-500"
+                                    onClick={() => {
+                                        deleteCustomerHandler(customer.id);
+                                    }}
+                                >
+                                    刪除
+                                </a>
+                            </Table.Cell>
+                        </Table.Row>
+                    ))
+                }
+            </Table.Body>
+        </Table>
     );
 }
 
-export default CustomerList;
+export default CustomersList;
