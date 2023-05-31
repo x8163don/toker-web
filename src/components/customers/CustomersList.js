@@ -39,14 +39,14 @@ const CustomersList = (props) => {
                                     </Link>
                                 </div>
                                 <div className="ml-4 inline-block">
-                                    <a
+                                    <span
                                         className="font-medium cursor-pointer text-red-600 hover:underline dark:text-red-500"
                                         onClick={() => {
                                             props.onDeleteCustomer(customer.id);
                                         }}
                                     >
                                         <HiOutlineTrash/>
-                                    </a>
+                                    </span>
                                 </div>
                             </Table.Cell>
                         </Table.Row>

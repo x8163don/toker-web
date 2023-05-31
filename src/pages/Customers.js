@@ -9,7 +9,6 @@ function CustomersPage() {
 
     const [isShowNewCustomerModel, setIsShowNewCustomerModel] = useState(false);
     const [customers, setCustomers] = useState([]);
-    const [selectedCustomer, setSelectedCustomer] = useState(null);
 
     useEffect(() => {
         getCustomers().then(r => {
@@ -31,17 +30,11 @@ function CustomersPage() {
         })
     }
 
-    function selectCustomerHandler(customerId) {
-        const customer = customers.find(c => c.id === customerId);
-        setSelectedCustomer(customer);
-    }
-
     return (
         <div className="w-full">
             <CustomersHeader onClick={() => setIsShowNewCustomerModel(!isShowNewCustomerModel)}/>
 
             <CustomersList customers={customers}
-                           onSelectCustomer={selectCustomerHandler}
                            onDeleteCustomer={deleteCustomerHandler}/>
 
             <Modal
