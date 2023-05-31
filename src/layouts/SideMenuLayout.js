@@ -1,6 +1,5 @@
 import {Outlet} from 'react-router-dom';
 import SideMenu from '../components/SideMenu';
-import {Navbar} from 'flowbite-react';
 
 function SideMenuLayout() {
     return (
