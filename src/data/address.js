@@ -1378,11 +1378,6 @@ export const getDistricts = (city) => {
 }
 
 export const getRoads = (city, district) => {
-    let record = cities.find((record) => {
-        if (record.City === city && record.District === district) {
-            return record
-        }
-        return undefined
-    })
+    let record = cities.find((record) => record.City === city && record.District === district)
     return record.Roads
 }
