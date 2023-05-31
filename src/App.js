@@ -5,7 +5,7 @@ import axios from "axios";
 
 
 function App() {
-    axios.defaults.baseURL = "http://localhost:8080/";
+    axios.defaults.baseURL = process.env.REACT_APP_API_BASE_URL;
 
     return <RouterProvider router={router}/>;
 }
