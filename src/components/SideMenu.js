@@ -1,6 +1,6 @@
 import {NavLink} from 'react-router-dom';
 import {Sidebar} from 'flowbite-react';
-import {HiUser, HiUsers,HiOutlineMenu} from 'react-icons/hi/';
+import {HiUser, HiUsers} from 'react-icons/hi/';
 import {IoSettingsSharp} from 'react-icons/io5/';
 
 
