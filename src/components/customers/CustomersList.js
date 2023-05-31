@@ -1,4 +1,4 @@
-import React, {useNavigate} from 'react';
+import React from 'react';
 import {Table} from 'flowbite-react';
 import {HiOutlineTrash} from "react-icons/hi";
 import {Link} from "react-router-dom";
