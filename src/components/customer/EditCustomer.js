@@ -6,7 +6,7 @@ const EditCustomer = (props) => {
         <div>
             <div>Test</div>
             <div>{_.get(props.customer, 'name') ? _.get(props.customer, 'name') : ""}</div>
-            <div>{!!props.customer ? props.customer.birthday : ""}</div>
+            <div>{_.get(props.customer,'birthday') ? props.customer.birthday : ""}</div>
             <div>{!!props.customer ? props.customer.gender : ""}</div>
             <div>{_.get(props.customer,'email.email') ? props.customer.email.email : ""}</div>
             {
@@ -17,7 +17,7 @@ const EditCustomer = (props) => {
 
             {
                 !!props.customer ? props.customer.addresses.map(address => (
-                    <div>{address.address} {address.city} {address.dist}</div>
+                    <div> {address.city} {address.district} {address.road}</div>
                 )) : ""
             }
         </div>

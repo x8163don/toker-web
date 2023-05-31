@@ -1,7 +1,6 @@
 import React, {useEffect, useState} from "react";
 import CustomersList from "../components/customers/CustomersList";
 import CustomersHeader from "../components/customers/CustomersHeader";
-import EditCustomer from "../components/customers/EditCustomer";
 import AddNewCustomerModel from "../components/customers/AddNewCustomerModel";
 import {deleteCustomer, getCustomers} from "../data/customer/customer";
 import {Modal} from "flowbite-react";
@@ -44,8 +43,6 @@ function CustomersPage() {
             <CustomersList customers={customers}
                            onSelectCustomer={selectCustomerHandler}
                            onDeleteCustomer={deleteCustomerHandler}/>
-
-            <EditCustomer customer={selectedCustomer}/>
 
             <Modal
                 show={isShowNewCustomerModel}
