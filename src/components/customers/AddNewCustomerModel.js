@@ -3,11 +3,9 @@ import {Button, Dropdown} from 'flowbite-react';
 import {HiTrash, HiPlus} from "react-icons/hi";
 import {getCities, getDistricts} from "../../data/address";
 import {addCustomer} from "../../data/customer/customer";
+import {phoneAliases, addressAliases} from "../../contants/Aliases";
 
 const AddNewCustomerModel = (props) => {
-    const phoneAliases = ["行動電話", "住家", "公司", "住家傳真", "公司傳真"]
-    const addressAliases = ["住家", "公司", "其它"]
-
     const [name, setName] = useState("")
     const [gender, setGender] = useState("Male")
     const [birthday, setBirthday] = useState("")
@@ -306,6 +304,7 @@ const AddNewCustomerModel = (props) => {
                         <Button onClick={addAddressHandler} className="mt-2 "><HiPlus></HiPlus></Button>
                     </div>
                 </div>
+
                 <div className="flex flex-row mt-8">
                     <Button onClick={addNewCustomerHandler}>新增</Button>
                     <Button color="gray">取消</Button>
