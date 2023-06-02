@@ -2,7 +2,7 @@ import React, {useEffect, useState} from "react";
 import CustomersList from "../components/customers/CustomersList";
 import CustomersHeader from "../components/customers/CustomersHeader";
 import AddNewCustomerModel from "../components/customers/AddNewCustomerModel";
-import {deleteCustomer, getCustomers} from "../data/customer/customer";
+import {deleteCustomer, getCustomers} from "../data/customer/Customer";
 import {Modal} from "flowbite-react";
 
 function CustomersPage() {

@@ -2,7 +2,7 @@ import React, {useState} from 'react'
 import {Button, Dropdown} from 'flowbite-react';
 import {HiTrash, HiPlus} from "react-icons/hi";
 import {getCities, getDistricts} from "../../data/address";
-import {addCustomer} from "../../data/customer/customer";
+import {addCustomer} from "../../data/customer/Customer";
 import {phoneAliases, addressAliases} from "../../contants/Aliases";
 
 const AddNewCustomerModel = (props) => {

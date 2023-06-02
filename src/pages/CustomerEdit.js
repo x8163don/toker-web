@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from 'react';
 import {useParams} from "react-router-dom";
-import {getCustomer, updateCustomer} from "../data/customer/customer";
+import {getCustomer, updateCustomer} from "../data/customer/Customer";
 import EditCustomer from "../components/customer/EditCustomer";
 import {Tabs, Timeline} from "flowbite-react";
 
