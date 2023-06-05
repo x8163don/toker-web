@@ -1,4 +1,4 @@
-import React, {useEffect} from 'react';
+import React from 'react';
 import _ from 'lodash';
 import {Button, Select, Spinner} from "flowbite-react";
 import {getCities, getDistricts} from "../../data/address";

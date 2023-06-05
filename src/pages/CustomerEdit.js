@@ -2,12 +2,15 @@ import React, {useEffect, useState} from 'react';
 import {useParams} from "react-router-dom";
 import {getCustomer, updateCustomer} from "../data/customer/Customer";
 import EditCustomer from "../components/customer/EditCustomer";
-import {Tabs, Timeline} from "flowbite-react";
+import {Tabs} from "flowbite-react";
+import ContactHistory from "../components/customer/ContactHistory";
+import {deleteContactHistory, getContactHistory, listContactHistories} from "../data/customer/ContactHistory";
 
 const CustomerEdit = () => {
     const params = useParams()
     const userId = params.id
     const [customer, setCustomer] = useState({})
+    const [contactHistories, setContactHistories] = useState([])
     const [isSaving, setIsSaving] = useState(false)
 
     useEffect(() => {
@@ -16,7 +19,14 @@ const CustomerEdit = () => {
         }).catch(e => {
             console.log(e)
         })
-    }, [])
+
+        listContactHistories(userId).then(r => {
+            setContactHistories(r.contact_histories)
+        }).catch(e => {
+            console.log(e)
+        })
+    }, [userId])
+
 
     const onCustomerSaveHandler = async () => {
         try {
@@ -34,7 +44,7 @@ const CustomerEdit = () => {
     }
 
     return (
-        <Tabs.Group style="default">
+        <Tabs.Group>
             <Tabs.Item title={customer.name}>
                 <EditCustomer
                     key={customer.id}
@@ -128,26 +138,24 @@ const CustomerEdit = () => {
             </Tabs.Item>
 
             <Tabs.Item title="歷程">
-                <Timeline>
-                    <Timeline.Item>
-                        <Timeline.Point/>
-                        <Timeline.Content>
-                            <Timeline.Time>
-                                February 2022
-                            </Timeline.Time>
-                            <Timeline.Title>
-                                Application UI code in Tailwind CSS
-                            </Timeline.Title>
-                            <Timeline.Body>
-                                <p>
-                                    Get access to over 20+ pages including a dashboard layout, charts, kanban board,
-                                    calendar, and pre-order
-                                    E-commerce & Marketing pages.
-                                </p>
-                            </Timeline.Body>
-                        </Timeline.Content>
-                    </Timeline.Item>
-                </Timeline>
+                <ContactHistory
+                    customer={customer}
+                    contactHistories={contactHistories}
+                    onContactHistoryAdded={(contactHistoryId) => {
+                        getContactHistory(userId, contactHistoryId).then(r => {
+                            setContactHistories((prev) => {
+                                return [r, ...prev]
+                            })
+                        })
+                    }}
+                    onContactHistoryDeleted={(contactHistoryId) => {
+                        deleteContactHistory(userId, contactHistoryId).then(r => {
+                            setContactHistories((prev) => {
+                                return prev.filter(history => history.id !== contactHistoryId)
+                            })
+                        })
+                    }}
+                />
             </Tabs.Item>
         </Tabs.Group>
     )
