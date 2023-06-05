@@ -122,6 +122,13 @@ const CustomerEdit = () => {
                             return {...prev, addresses: newAddress}
                         })
                     }}
+                    onRoadChange={(road, index) => {
+                        setCustomer((prev) => {
+                            const newAddress = [...prev.addresses]
+                            newAddress[index].road = road
+                            return {...prev, addresses: newAddress}
+                        })
+                    }}
                     onAddAddress={() => {
                         setCustomer((prev) => {
                             return {
