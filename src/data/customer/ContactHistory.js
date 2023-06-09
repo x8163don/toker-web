@@ -20,10 +20,11 @@ export const listContactHistories = async (customerId) => {
     return axiosResponse.data
 }
 
-export const addContactHistory = async (customerId, title, content) => {
+export const addContactHistory = async (customerId, title, content, fileIds) => {
     const axiosResponse = await axios.post(`/customer/${customerId}/contact_history`, {
         title,
         content,
+        "file_ids": fileIds
     }, {
         headers: {
             "Content-Type": "application/json",

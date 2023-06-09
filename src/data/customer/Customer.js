@@ -50,3 +50,17 @@ export const deleteCustomer = async (id) => {
     });
     return axiosResponse.data;
 }
+
+export const getUploadInfo = async (id, filename, contentType) => {
+    let axiosResponse = await axios.post(`/customer/${id}/upload_info`, {
+            "filename": filename,
+            "content_type": contentType
+        },
+        {
+            headers: {
+                "Content-Type": "application/json", "Authorization": `${localStorage.getItem("token")}`
+            }
+        }
+    )
+    return axiosResponse.data;
+}
