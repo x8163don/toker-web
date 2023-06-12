@@ -1,7 +1,6 @@
 import axios from "axios";
 
 export const getFileURL = (objKey) => {
-
     return `${process.env.REACT_APP_API_BASE_URL}/${objKey}`
 }
 

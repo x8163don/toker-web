@@ -3,11 +3,13 @@ import {useFormik} from "formik";
 import * as Yup from "yup";
 import axios, {HttpStatusCode} from "axios";
 import {Link} from "react-router-dom";
-import {Alert} from "flowbite-react";
+import {Alert, Spinner} from "flowbite-react";
 
 const LoginPage = () => {
     const [isShowErrorAlert, setIsShowErrorAlert] = useState(false)
     const [errorMessage, setErrorMessage] = useState("")
+
+    const [isLoading, setIsLoading] = useState(false)
 
     const formik = useFormik({
         initialValues: {
@@ -20,6 +22,7 @@ const LoginPage = () => {
         }),
         onSubmit: async (values) => {
             try {
+                setIsLoading(true)
                 const response = await axios.post("accounts:login", {
                     account: values.email,
                     password: values.password,
@@ -36,6 +39,8 @@ const LoginPage = () => {
                 setTimeout(() => {
                     setIsShowErrorAlert(false)
                 }, 3000)
+            } finally {
+                setIsLoading(false)
             }
         },
     });
@@ -82,12 +87,16 @@ const LoginPage = () => {
                             </label>
                         </div>
                         <button type="submit"
-                                className="text-white bg-cyan-600 hover:bg-cyan-700 focus:ring-4 focus:ring-cyan-200 font-medium rounded-lg text-base px-5 py-3 w-full sm:w-auto text-center">登入
+                                className="text-white bg-cyan-600 hover:bg-cyan-700 focus:ring-4 focus:ring-cyan-200 font-medium rounded-lg text-base px-5 py-3 w-full sm:w-auto text-center"
+                                disabled={isLoading}>
+                            {isLoading && <Spinner/>}
+                            <span className={isLoading ? "ml-2" : ""}>
+                        {isLoading ? "處理中" : "登入"}
+                            </span>
                         </button>
                     </form>
                 </div>
             </div>
-            {isShowErrorAlert ? <Alert color="failure" className="fixed flex"> <span>{errorMessage}</span> </Alert> : null}
         </div>);
 };
 
