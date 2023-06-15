@@ -5,6 +5,7 @@ import DashboardPage from "./Dashboard";
 import CustomersPage from "./Customers";
 import CustomerEdit from "./CustomerEdit";
 import SideMenuLayout from "../layouts/SideMenuLayout";
+import Account from "./Account";
 
 export const router = createBrowserRouter([
     {path: '/', element: <HomePage/>},
@@ -24,4 +25,11 @@ export const router = createBrowserRouter([
             {path: ':id', element: <CustomerEdit/>},
         ]
     },
+    {
+        path: '/account',
+        element: <SideMenuLayout/>,
+        children: [
+            {path: '', element: <Account/>}
+        ]
+    }
 ])

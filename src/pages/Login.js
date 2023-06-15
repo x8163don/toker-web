@@ -3,12 +3,9 @@ import {useFormik} from "formik";
 import * as Yup from "yup";
 import axios, {HttpStatusCode} from "axios";
 import {Link} from "react-router-dom";
-import {Alert, Spinner} from "flowbite-react";
+import {Spinner} from "flowbite-react";
 
 const LoginPage = () => {
-    const [isShowErrorAlert, setIsShowErrorAlert] = useState(false)
-    const [errorMessage, setErrorMessage] = useState("")
-
     const [isLoading, setIsLoading] = useState(false)
 
     const formik = useFormik({
@@ -34,11 +31,7 @@ const LoginPage = () => {
                     window.location.href = "/customers";
                 }
             } catch (e) {
-                setErrorMessage(e.response.data.message)
-                setIsShowErrorAlert(true)
-                setTimeout(() => {
-                    setIsShowErrorAlert(false)
-                }, 3000)
+                console.log(e);
             } finally {
                 setIsLoading(false)
             }
