@@ -104,7 +104,7 @@ const AddNewCustomerModel = (props) => {
         }
 
         if (birthday !== "") {
-            newCustomerData.birthday = new Date(birthday).getTime() / 1000
+            newCustomerData.birthday = new Date(birthday).getTime()
         }
 
         const nonEmptyPhone = phones.filter(phone => phone.phone !== "")
