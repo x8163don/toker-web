@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {Fragment} from 'react';
 import _ from 'lodash';
 import {Button, Select, Spinner} from "flowbite-react";
 import {getCities, getDistricts} from "../../data/address";
@@ -14,9 +14,8 @@ const EditCustomer = (props) => {
         )
     }
 
-
     return (
-        <div>
+        <Fragment>
             <label className="text-sm font-medium text-gray-900 block mb-2">客戶名稱</label>
             <input type="text"
                    className="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-cyan-600 focus:border-cyan-600 block w-full p-2.5 mb-4"
@@ -172,7 +171,7 @@ const EditCustomer = (props) => {
                     </span>
                 </Button>
             </div>
-        </div>
+        </Fragment>
     )
 }
 

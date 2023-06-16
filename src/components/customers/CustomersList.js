@@ -1,5 +1,5 @@
 import React from 'react';
-import {Table} from 'flowbite-react';
+import {Badge, Table} from 'flowbite-react';
 import {HiOutlineTrash} from "react-icons/hi";
 import {Link} from "react-router-dom";
 
@@ -11,6 +11,9 @@ const CustomersList = (props) => {
             </Table.HeadCell>
             <Table.HeadCell>
                 電話
+            </Table.HeadCell>
+            <Table.HeadCell>
+                資料完整度
             </Table.HeadCell>
             <Table.HeadCell>
                 操作
@@ -27,6 +30,15 @@ const CustomersList = (props) => {
                             {customer.phones.length > 0 ?
                                 <a className="cursor-pointer font-medium hover:underline"
                                    href={`tel:` + customer.phones[0].phone}>{customer.phones[0].phone}</a> : ""}
+                        </Table.Cell>
+                        <Table.Cell>
+                                <Badge
+                                    className="w-fit"
+                                    color={customer.data_integrity < 60 ? "failure" : "success"}
+                                       size="sm"
+                                >
+                                    {customer.data_integrity + "%"}
+                                </Badge>
                         </Table.Cell>
                         <Table.Cell>
                             <div className="inline-block">
