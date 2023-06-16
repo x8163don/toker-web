@@ -4,6 +4,7 @@ import CustomersHeader from "../components/customers/CustomersHeader";
 import AddNewCustomerModel from "../components/customers/AddNewCustomerModel";
 import {deleteCustomer, getCustomers} from "../data/customer/Customer";
 import {Button, Modal} from "flowbite-react";
+import CustomerCard from "../components/customers/CustomerCard";
 
 function CustomersPage() {
 
@@ -26,7 +27,7 @@ function CustomersPage() {
     }
 
     return (
-        <div className="w-full">
+        <div className="w-full flex flex-col items-center">
             <CustomersHeader onClick={() => setIsShowNewCustomerModel(!isShowNewCustomerModel)}/>
 
             <CustomersList customers={customers}

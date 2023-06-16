@@ -9,7 +9,7 @@ const AddNewCustomerModel = (props) => {
     const [name, setName] = useState("")
     const [gender, setGender] = useState("Male")
     const [birthday, setBirthday] = useState("")
-    const [emails, setEmail] = useState([{alias: "main", email: ""}])
+    const [email, setEmail] = useState("")
     const [phones, setPhones] = useState([{alias: phoneAliases[0], phone: ""}])
     const [addresses, setAddresses] = useState([{alias: addressAliases[0], city: "", district: "", road: ""}])
 
@@ -100,10 +100,7 @@ const AddNewCustomerModel = (props) => {
         let newCustomerData = {
             name: name,
             gender: gender,
-        }
-
-        if (emails.length > 0) {
-            newCustomerData.emails = emails
+            email: email
         }
 
         if (birthday !== "") {
@@ -126,7 +123,7 @@ const AddNewCustomerModel = (props) => {
                 setName("")
                 setGender("Male")
                 setBirthday("")
-                setEmail([{alias: "main", email: ""}])
+                setEmail("")
                 setPhones([{alias: phoneAliases[0], phone: ""}])
                 setAddresses([{alias: addressAliases[0], city: "", district: "", road: ""}])
                 props.onSaveCustomer()
@@ -185,13 +182,8 @@ const AddNewCustomerModel = (props) => {
                         <input type="email" name="email" id="email"
                                className="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-cyan-600 focus:border-cyan-600 block w-full p-2.5"
                                placeholder="example@company.com"
-                               value={emails[0].email}
-                               onChange={(e) => {
-                                   setEmail(prevState => {
-                                       prevState[0].email = e.target.value
-                                       return [...prevState]
-                                   })
-                               }}
+                               value={email}
+                               onChange={(e) => setEmail(e.target.value)}
                         />
                     </div>
 

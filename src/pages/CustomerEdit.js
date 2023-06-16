@@ -69,12 +69,7 @@ const CustomerEdit = () => {
                     }}
                     onEmailChange={(email) => {
                         setCustomer((prev) => {
-                            if (prev.email) {
-                                prev.email.email = email
-                            } else {
-                                prev.email = {alias: "main", email: email}
-                            }
-                            return {...prev}
+                            return {...prev, email: email}
                         })
                     }}
                     onPhoneAliasChange={(alias, index) => {
