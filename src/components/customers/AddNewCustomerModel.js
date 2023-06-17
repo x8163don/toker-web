@@ -1,15 +1,18 @@
-import React, {useState} from 'react'
+import React, {useRef, useState} from 'react'
 import {Button, Dropdown} from 'flowbite-react';
 import {HiTrash, HiPlus} from "react-icons/hi";
 import {getCities, getDistricts} from "../../data/address";
 import {addCustomer} from "../../data/customer/Customer";
 import {phoneAliases, addressAliases} from "../../contants/Aliases";
+import {Gender, GENDER_LABEL} from "../../contants/Gender";
 
 const AddNewCustomerModel = (props) => {
-    const [name, setName] = useState("")
-    const [gender, setGender] = useState("Male")
-    const [birthday, setBirthday] = useState("")
-    const [email, setEmail] = useState("")
+
+    const nameInput = useRef("")
+    const emailInput = useRef("")
+    const birthdayInput = useRef(undefined)
+
+    const [gender, setGender] = useState(Gender.male)
     const [phones, setPhones] = useState([{alias: phoneAliases[0], phone: ""}])
     const [addresses, setAddresses] = useState([{alias: addressAliases[0], city: "", district: "", road: ""}])
 
@@ -98,13 +101,13 @@ const AddNewCustomerModel = (props) => {
 
     const addNewCustomerHandler = () => {
         let newCustomerData = {
-            name: name,
+            name: nameInput.current.value,
             gender: gender,
-            email: email
+            email: emailInput.current.value,
         }
 
-        if (birthday !== "") {
-            newCustomerData.birthday = new Date(birthday).getTime()
+        if (birthdayInput.current.value !== "") {
+            newCustomerData.birthday = new Date(birthdayInput.current.value).getTime()
         }
 
         const nonEmptyPhone = phones.filter(phone => phone.phone !== "")
@@ -120,10 +123,10 @@ const AddNewCustomerModel = (props) => {
 
         addCustomer(newCustomerData)
             .then(r => {
-                setName("")
-                setGender("Male")
-                setBirthday("")
-                setEmail("")
+                nameInput.current.value = ""
+                setGender(Gender.male)
+                emailInput.current.value = ""
+                birthdayInput.current.value = ""
                 setPhones([{alias: phoneAliases[0], phone: ""}])
                 setAddresses([{alias: addressAliases[0], city: "", district: "", road: ""}])
                 props.onSaveCustomer()
@@ -140,10 +143,7 @@ const AddNewCustomerModel = (props) => {
                         <input type="text" name="name" id="name"
                                className="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-cyan-600 focus:border-cyan-600 block w-full p-2.5"
                                placeholder="客戶姓名"
-                               onChange={(e) => {
-                                   setName(e.target.value)
-                               }}
-                               value={name}
+                               ref={nameInput}
                         />
                     </div>
 
@@ -151,16 +151,16 @@ const AddNewCustomerModel = (props) => {
                         <label htmlFor="gender"
                                className="text-sm font-medium text-gray-900 block mb-2">性別</label>
                         <Button.Group>
-                            <Button gradientDuoTone={gender === "Male" ? "cyanToBlue" : ""}
+                            <Button gradientDuoTone={gender === Gender.male ? "cyanToBlue" : ""}
                                     color="gray"
-                                    onClick={() => setGender("Male")}>
-                                男
+                                    onClick={() => setGender(Gender.male)}>
+                                {GENDER_LABEL[Gender.male]}
                             </Button>
                             <Button
-                                gradientDuoTone={gender === "Female" ? "pinkToOrange" : ""}
+                                gradientDuoTone={gender === Gender.female ? "pinkToOrange" : ""}
                                 color="gray"
-                                onClick={() => setGender("Female")}>
-                                女
+                                onClick={() => setGender(Gender.female)}>
+                                {GENDER_LABEL[Gender.female]}
                             </Button>
                         </Button.Group>
                     </div>
@@ -171,8 +171,7 @@ const AddNewCustomerModel = (props) => {
                         <input type="date"
                                className="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-cyan-600 focus:border-cyan-600 block w-full p-2.5"
                                id="birthday" name="birthday" placeholder="2000/01/01"
-                               onChange={(event) => setBirthday(event.target.value)}
-                               value={birthday}
+                               ref={birthdayInput}
                         />
 
                     </div>
@@ -182,8 +181,7 @@ const AddNewCustomerModel = (props) => {
                         <input type="email" name="email" id="email"
                                className="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-cyan-600 focus:border-cyan-600 block w-full p-2.5"
                                placeholder="example@company.com"
-                               value={email}
-                               onChange={(e) => setEmail(e.target.value)}
+                               ref={emailInput}
                         />
                     </div>
 

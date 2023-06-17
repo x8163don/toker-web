@@ -6,7 +6,7 @@ import {Tabs} from "flowbite-react";
 import ContactHistory from "../components/customer/ContactHistory";
 import {deleteContactHistory, getContactHistory, listContactHistories} from "../data/customer/ContactHistory";
 
-const CustomerEdit = () => {
+const Customer = () => {
     const params = useParams()
     const userId = params.id
     const [customer, setCustomer] = useState({})
@@ -163,4 +163,4 @@ const CustomerEdit = () => {
     )
 }
 
-export default CustomerEdit
+export default Customer
