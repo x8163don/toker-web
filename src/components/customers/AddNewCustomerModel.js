@@ -190,7 +190,7 @@ const AddNewCustomerModel = (props) => {
                                 }}
                         >
                             {
-                                getCities().map((alias) => <option>{alias}</option>)
+                                getCities().map((city, idx) => <option key={`hc-` + city + idx}>{city}</option>)
                             }
                         </Select>
 
@@ -200,7 +200,7 @@ const AddNewCustomerModel = (props) => {
                                 ref={homeAddressDistrict}
                         >
                             {
-                                homeDistOptions.map((alias) => <option>{alias}</option>)
+                                homeDistOptions.map((dist, idx) => <option key={`hd-` + dist + idx}>{dist}</option>)
                             }
                         </Select>
 
@@ -225,7 +225,7 @@ const AddNewCustomerModel = (props) => {
                                 }}
                         >
                             {
-                                getCities().map((alias) => <option>{alias}</option>)
+                                getCities().map((city, idx) => <option key={`cc` + city + idx}>{city}</option>)
                             }
                         </Select>
 
@@ -235,7 +235,8 @@ const AddNewCustomerModel = (props) => {
                                 ref={companyAddressDistrict}
                         >
                             {
-                                companyDistOptions.map((alias) => <option>{alias}</option>)
+                                companyDistOptions.map((dist, idx) => <option
+                                    key={`cd-` + dist + idx}>{dist}</option>)
                             }
                         </Select>
 
