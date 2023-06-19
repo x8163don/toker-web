@@ -235,8 +235,7 @@ const AddNewCustomerModel = (props) => {
                                 ref={companyAddressDistrict}
                         >
                             {
-                                companyDistOptions.map((dist, idx) => <option
-                                    key={`cd-` + dist + idx}>{dist}</option>)
+                                companyDistOptions.map((dist, idx) => <option key={`cd-` + dist + idx}>{dist}</option>)
                             }
                         </Select>
 
