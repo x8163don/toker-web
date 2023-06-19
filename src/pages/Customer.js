@@ -27,18 +27,15 @@ const Customer = () => {
         })
     }, [userId])
 
-
-    const onCustomerSaveHandler = async () => {
+    const customerSaveHandler = async (customerData) => {
         try {
             setIsSaving(true)
-            const customerData = {...customer}
-            customerData.phones = customerData.phones.filter(phone => phone.phone !== "")
-            customerData.addresses = customerData.addresses.filter(address => address.city !== "" && address.district !== "" && address.road !== "")
             await updateCustomer(customerData)
             const r = await getCustomer(customer.id)
             setCustomer(r)
-            setIsSaving(false)
         } catch (e) {
+            console.log(e)
+        } finally {
             setIsSaving(false)
         }
     }
@@ -47,96 +44,10 @@ const Customer = () => {
         <Tabs.Group>
             <Tabs.Item title={customer.name}>
                 <EditCustomer
-                    key={customer.id}
                     customer={customer}
-                    onNameChange={(name) => {
-                        setCustomer((prev) => {
-                            prev.name = name
-                            return {...prev}
-                        })
-                    }}
-                    onBirthdayChange={(birthday) => {
-                        setCustomer((prev) => {
-                            prev.birthday = birthday
-                            return {...prev}
-                        })
-                    }}
-                    onGenderChange={(gender) => {
-                        setCustomer((prev) => {
-                            prev.gender = gender
-                            return {...prev}
-                        })
-                    }}
-                    onEmailChange={(email) => {
-                        setCustomer((prev) => {
-                            return {...prev, email: email}
-                        })
-                    }}
-                    onPhoneAliasChange={(alias, index) => {
-                        setCustomer((prev) => {
-                            prev.phones[index].alias = alias
-                            return {...prev}
-                        })
-                    }}
-                    onPhoneChange={(phone, index) => {
-                        setCustomer((prev) => {
-                            prev.phones[index].phone = phone
-                            return {...prev}
-                        })
-                    }}
-                    onAddPhone={() => {
-                        setCustomer((prev) => {
-                            return {
-                                ...prev, phones: [...prev.phones, {
-                                    alias: "",
-                                    phone: ""
-                                }]
-                            }
-                        })
-                    }}
-                    onAddressAliasChange={(alias, index) => {
-                        setCustomer((prev) => {
-                            prev.addresses[index].alias = alias
-                            const newAddress = [...prev.addresses]
-                            newAddress[index].alias = alias
-                            return {...prev, addresses: newAddress}
-                        })
-                    }}
-                    onCityChange={(city, index) => {
-                        setCustomer((prev) => {
-                            const newAddress = [...prev.addresses]
-                            newAddress[index].city = city
-                            newAddress[index].district = ""
-                            return {...prev, addresses: newAddress}
-                        })
-                    }}
-                    onDistrictChange={(dist, index) => {
-                        setCustomer((prev) => {
-                            const newAddress = [...prev.addresses]
-                            newAddress[index].district = dist
-                            return {...prev, addresses: newAddress}
-                        })
-                    }}
-                    onRoadChange={(road, index) => {
-                        setCustomer((prev) => {
-                            const newAddress = [...prev.addresses]
-                            newAddress[index].road = road
-                            return {...prev, addresses: newAddress}
-                        })
-                    }}
-                    onAddAddress={() => {
-                        setCustomer((prev) => {
-                            return {
-                                ...prev, addresses: [...prev.addresses, {
-                                    alias: "",
-                                    city: ""
-                                }]
-                            }
-                        })
-                    }}
+                    onSave={customerSaveHandler}
                     isSaving={isSaving}
-                    onSave={onCustomerSaveHandler}
-                />
+                ></EditCustomer>
             </Tabs.Item>
 
             <Tabs.Item title="歷程">

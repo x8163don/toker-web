@@ -46,7 +46,7 @@ const CustomerCard = (props) => {
                     {
                         function () {
                             const timestamp = +_.get(props, "customer.birthday", "0")
-                            if (timestamp === "0") {
+                            if (timestamp === 0) {
                                 return "-"
                             } else
                                 return DateTime.fromMillis(+timestamp).toFormat("yyyy/MM/dd")
@@ -59,7 +59,7 @@ const CustomerCard = (props) => {
                     {
                         function () {
                             const timestamp = +_.get(props, "customer.birthday", "0")
-                            if (timestamp === "0") {
+                            if (timestamp === 0) {
                                 return "-"
                             } else
                                 return getAge(timestamp)

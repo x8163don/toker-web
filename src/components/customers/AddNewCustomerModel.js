@@ -4,6 +4,7 @@ import {getCities, getDistricts} from "../../data/address";
 import {addCustomer} from "../../data/customer/Customer";
 import {Gender, GENDER_LABEL} from "../../contants/Gender";
 import {HiUser, HiMail, HiHome, HiPhone, HiOfficeBuilding} from "react-icons/hi";
+import {Address, Phone} from "../../contants/Aliases";
 
 const AddNewCustomerModel = (props) => {
 
@@ -20,7 +21,7 @@ const AddNewCustomerModel = (props) => {
     const companyAddressDistrict = useRef("")
     const companyAddressRoad = useRef("")
 
-    const [gender, setGender] = useState(Gender.male)
+    const [gender, setGender] = useState(Gender.MALE)
 
     const [homeDistOptions, setHomeDistOptions] = useState([])
     const [companyDistOptions, setCompanyDistOptions] = useState([])
@@ -47,20 +48,20 @@ const AddNewCustomerModel = (props) => {
         }
 
         if (cellPhoneInput.current.value !== "") {
-            newCustomerData.phones.push({alias: "CellPhone", phone: cellPhoneInput.current.value})
+            newCustomerData.phones.push({alias: Phone.MOBILE, phone: cellPhoneInput.current.value})
         }
 
         if (homeNumberInput.current.value !== "") {
-            newCustomerData.phones.push({alias: "Home", phone: homeNumberInput.current.value})
+            newCustomerData.phones.push({alias: Phone.HOME, phone: homeNumberInput.current.value})
         }
 
         if (companyNumberInput.current.value !== "") {
-            newCustomerData.phones.push({alias: "Company", phone: companyNumberInput.current.value})
+            newCustomerData.phones.push({alias: Phone.COMPANY, phone: companyNumberInput.current.value})
         }
 
         if (homeAddressCity !== "" && homeAddressDistrict.current.value !== "" && homeAddressRoad.current.value !== "") {
             newCustomerData.addresses.push({
-                alias: "Home",
+                alias: Address.HOME,
                 city: homeAddressCity,
                 district: homeAddressDistrict.current.value,
                 road: homeAddressRoad.current.value
@@ -69,7 +70,7 @@ const AddNewCustomerModel = (props) => {
 
         if (companyAddressCity !== "" && companyAddressDistrict.current.value !== "" && companyAddressRoad.current.value !== "") {
             newCustomerData.addresses.push({
-                alias: "Company",
+                alias: Address.COMPANY,
                 city: companyAddressCity,
                 district: companyAddressDistrict.current.value,
                 road: companyAddressRoad.current.value
@@ -86,7 +87,7 @@ const AddNewCustomerModel = (props) => {
 
     function cleanup() {
         nameInput.current.value = ""
-        setGender(Gender.male)
+        setGender(Gender.MALE)
         emailInput.current.value = ""
         birthdayInput.current.value = ""
         homeNumberInput.current.value = ""
@@ -114,16 +115,16 @@ const AddNewCustomerModel = (props) => {
                     <Label htmlFor="gender"
                            className="text-sm font-medium text-gray-900 block mb-2">性別</Label>
                     <Button.Group>
-                        <Button gradientDuoTone={gender === Gender.male ? "cyanToBlue" : ""}
+                        <Button gradientDuoTone={gender === Gender.MALE ? "cyanToBlue" : ""}
                                 color="gray"
-                                onClick={() => setGender(Gender.male)}>
-                            {GENDER_LABEL[Gender.male]}
+                                onClick={() => setGender(Gender.MALE)}>
+                            {GENDER_LABEL[Gender.MALE]}
                         </Button>
                         <Button
-                            gradientDuoTone={gender === Gender.female ? "pinkToOrange" : ""}
+                            gradientDuoTone={gender === Gender.FEMALE ? "pinkToOrange" : ""}
                             color="gray"
-                            onClick={() => setGender(Gender.female)}>
-                            {GENDER_LABEL[Gender.female]}
+                            onClick={() => setGender(Gender.FEMALE)}>
+                            {GENDER_LABEL[Gender.FEMALE]}
                         </Button>
                     </Button.Group>
                 </div>
@@ -220,9 +221,7 @@ const AddNewCustomerModel = (props) => {
                         <Select label="城市"
                                 id="company-city"
                                 value={companyAddressCity}
-                                onChange={(e) => {
-                                    setCompanyAddressCity(e.target.value)
-                                }}
+                                onChange={(e) => setCompanyAddressCity(e.target.value)}
                         >
                             {
                                 getCities().map((city, idx) => <option key={`cc` + city + idx}>{city}</option>)

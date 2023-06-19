@@ -1,11 +1,11 @@
 export const Gender = Object.freeze({
-    "male": "MALE",
-    "female": "FEMALE"
+    "MALE": "male",
+    "FEMALE": "female"
 })
 
 export const GENDER_LABEL = {
-    [Gender.male]: "男",
-    [Gender.female]: "女"
+    [Gender.MALE]: "男",
+    [Gender.FEMALE]: "女"
 }
 
 
