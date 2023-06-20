@@ -4,7 +4,7 @@ import LoginPage from "./Login";
 import DashboardPage from "./Dashboard";
 import CustomersPage from "./Customers";
 import Customer from "./Customer";
-import SideMenuLayout from "../layouts/SideMenuLayout";
+import SideMenuLayout from "../helper/SideMenuLayout";
 import Account from "./Account";
 
 export const router = createBrowserRouter([

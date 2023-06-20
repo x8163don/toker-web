@@ -1,6 +1,16 @@
 import axios from "axios";
 import {uploadFile} from "../file/FileUploader";
 
+export const authCheck = async () => {
+    const axiosResponse = await axios.get("/auth/check", {
+        headers: {
+            "Content-Type": "application/json",
+            "Authorization": `${localStorage.getItem("token")}`
+        }
+    });
+    return axiosResponse.status;
+}
+
 export const getAccount = async () => {
     const axiosResponse = await axios.get("/account", {
         headers: {
