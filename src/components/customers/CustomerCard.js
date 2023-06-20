@@ -4,6 +4,7 @@ import React from "react";
 import {DateTime} from "luxon";
 import {getAge} from "../../utils/Age";
 import {Link} from "react-router-dom";
+import {Gender} from "../../contants/Gender";
 
 const CustomerCard = (props) => {
     const getDataIntegrityLevel = (dataIntegrity) => {
@@ -34,7 +35,7 @@ const CustomerCard = (props) => {
                     size="lg"
                     img={_.get(props, "customer.avatar", "")}
                     bordered
-                    color={_.get(props, "customer.gender", "Male") === "Male" ? "cyan" : "pink"}
+                    color={_.get(props, "customer.gender", Gender.MALE) === Gender.MALE ? "cyan" : "pink"}
                 />
                 <h5 className="mt-2 text-xl font-medium text-gray-900 dark:text-white">
                     {_.get(props, "customer.name", "")}
