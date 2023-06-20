@@ -1,6 +1,5 @@
-import {useContext, useEffect} from 'react'
+import {useContext} from 'react'
 import {Navigate} from "react-router-dom";
-import axios from "axios";
 
 import _ from 'lodash'
 import {AuthContext} from "../store/AuthContext";
