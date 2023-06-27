@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from "react";
-import { Button, Label, Select, TextInput } from "flowbite-react";
+import { Button, Label, Select, Textarea, TextInput } from "flowbite-react";
 import { getCities, getDistricts } from "../../data/address";
 import { addCustomer } from "../../data/customer/Customer";
 import { Gender, GENDER_LABEL } from "../../contants/Gender";
@@ -19,6 +19,8 @@ const AddNewCustomerModel = (props) => {
   const homeNumberInput = useRef("");
   const cellPhoneInput = useRef("");
   const companyNumberInput = useRef("");
+  const professionInput = useRef("");
+  const noteInput = useRef("");
   const [homeAddressCity, setHomeAddressCity] = useState(getCities()[0]);
   const homeAddressDistrict = useRef("");
   const homeAddressRoad = useRef("");
@@ -44,6 +46,8 @@ const AddNewCustomerModel = (props) => {
       name: nameInput.current.value,
       gender: gender,
       email: emailInput.current.value,
+      profession: professionInput.current.value,
+      note: noteInput.current.value,
       phones: [],
       addresses: [],
     };
@@ -277,6 +281,16 @@ const AddNewCustomerModel = (props) => {
         </div>
 
         <div className="col-span-6 sm:col-span-6">
+          <Label htmlFor="profession">職業</Label>
+          <TextInput
+            id="profession"
+            type="text"
+            placeholder="職業"
+            ref={professionInput}
+          />
+        </div>
+
+        <div className="col-span-6 sm:col-span-6">
           <Label htmlFor="company-address">公司地址</Label>
           <div className="flex flex-row items-center  mb-2">
             <HiOfficeBuilding className="mr-2" />
@@ -311,6 +325,11 @@ const AddNewCustomerModel = (props) => {
             />
           </div>
         </div>
+      </div>
+
+      <div className="col-span-6 sm:col-span-6">
+        <Label htmlFor="note">備註</Label>
+        <Textarea id="note" ref={noteInput} />
       </div>
 
       <div className="flex flex-row-reverse mt-8">
