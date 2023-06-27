@@ -1,103 +1,130 @@
-import React, {useEffect, useState} from "react";
+import React, { useEffect, useState } from "react";
 import CustomersList from "../components/customers/CustomersList";
 import CustomersHeader from "../components/customers/CustomersHeader";
 import AddNewCustomerModel from "../components/customers/AddNewCustomerModel";
-import {deleteCustomer, getCustomers} from "../data/customer/Customer";
-import {Button, Modal} from "flowbite-react";
+import { deleteCustomer, searchCustomers } from "../data/customer/Customer";
+import { Button, Modal, Pagination } from "flowbite-react";
 
 function CustomersPage() {
+  const [isShowNewCustomerModel, setIsShowNewCustomerModel] = useState(false);
+  const [customers, setCustomers] = useState([]);
 
-    const [isShowNewCustomerModel, setIsShowNewCustomerModel] = useState(false);
-    const [customers, setCustomers] = useState([]);
+  const [isShowDeleteCustomerModel, setIsShowDeleteCustomerModel] =
+    useState(false);
+  const [targetCustomer, setTargetCustomer] = useState({});
 
-    const [isShowDeleteCustomerModel, setIsShowDeleteCustomerModel] = useState(false);
-    const [targetCustomer, setTargetCustomer] = useState({});
+  const [currentPage, setCurrentPage] = useState(1);
+  const [totalPage, setTotalPage] = useState(1);
 
-    useEffect(() => {
-        getCustomers().then(r => {
-            setCustomers(r.customers);
-        })
-    }, [])
+  useEffect(() => {
+    searchCustomers().then((r) => {
+      setCustomers(r.customers);
+      setCurrentPage(r.paginate.page);
+      setTotalPage(r.paginate.total_page);
+    });
+  }, []);
 
-    const onSaveCustomerHandler = () => {
-        getCustomers().then(r => {
-            setCustomers(r.customers);
-        })
-    }
+  const onSaveCustomerHandler = () => {
+    searchCustomers({}).then((r) => {
+      setCustomers(r.customers);
+      console.log(r);
+    });
+  };
 
-    return (
-        <div className="w-full flex flex-col items-center">
-            <CustomersHeader onClick={() => setIsShowNewCustomerModel(!isShowNewCustomerModel)}/>
+  const onPageChangeHandler = (page) => {
+    searchCustomers({ page: page }).then((r) => {
+      setCustomers(r.customers);
+      setCurrentPage(r.paginate.page);
+      setTotalPage(r.paginate.total_page);
+    });
+  };
 
-            <CustomersList customers={customers}
-                           onDeleteCustomer={(id) => {
-                               setTargetCustomer(customers.find(c => c.id === id))
-                               setIsShowDeleteCustomerModel(true)
-                           }}/>
+  return (
+    <div className="w-full flex flex-col items-center">
+      <CustomersHeader
+        onClick={() => setIsShowNewCustomerModel(!isShowNewCustomerModel)}
+      />
 
-            <Modal
-                show={isShowNewCustomerModel}
-                onClose={() => setIsShowNewCustomerModel(false)}
-            >
-                <Modal.Header>新增客戶</Modal.Header>
-                <Modal.Body>
-                    <AddNewCustomerModel
-                        key="new-customer"
-                        onSaveCustomer={onSaveCustomerHandler}
-                        onClose={() => setIsShowNewCustomerModel(false)}
-                    />
-                </Modal.Body>
-            </Modal>
+      <CustomersList
+        customers={customers}
+        onDeleteCustomer={(id) => {
+          setTargetCustomer(customers.find((c) => c.id === id));
+          setIsShowDeleteCustomerModel(true);
+        }}
+      />
 
-            <Modal
-                onClose={() => {
-                    setIsShowDeleteCustomerModel(false)
+      <Pagination
+        layout="pagination"
+        showIcons
+        currentPage={currentPage}
+        totalPages={totalPage}
+        onPageChange={onPageChangeHandler}
+        previousLabel=""
+        nextLabel=""
+      />
+
+      <Modal
+        show={isShowNewCustomerModel}
+        onClose={() => setIsShowNewCustomerModel(false)}
+      >
+        <Modal.Header>新增客戶</Modal.Header>
+        <Modal.Body>
+          <AddNewCustomerModel
+            key="new-customer"
+            onSaveCustomer={onSaveCustomerHandler}
+            onClose={() => setIsShowNewCustomerModel(false)}
+          />
+        </Modal.Body>
+      </Modal>
+
+      <Modal
+        onClose={() => {
+          setIsShowDeleteCustomerModel(false);
+        }}
+        popup
+        show={isShowDeleteCustomerModel}
+        size="md"
+      >
+        <Modal.Header />
+        <Modal.Body>
+          <div className="text-center">
+            <h3 className="mb-5 text-lg font-normal text-gray-500 dark:text-gray-400">
+              <p>
+                確定要刪除{targetCustomer.name}
+                的紀錄嗎？這會將其所有相關的資訊都一併刪除。
+              </p>
+            </h3>
+            <div className="flex justify-center gap-4">
+              <Button
+                color="failure"
+                onClick={() => {
+                  setIsShowDeleteCustomerModel(false);
+                  if (!targetCustomer.id) {
+                    return;
+                  }
+                  deleteCustomer(targetCustomer.id).then((r) => {
+                    setCustomers((prevState) => {
+                      return prevState.filter((c) => c.id !== r.id);
+                    });
+                  });
                 }}
-                popup
-                show={isShowDeleteCustomerModel}
-                size="md"
-            >
-                <Modal.Header/>
-                <Modal.Body>
-                    <div className="text-center">
-                        <h3 className="mb-5 text-lg font-normal text-gray-500 dark:text-gray-400">
-                            <p>
-                                確定要刪除{targetCustomer.name}的紀錄嗎？這會將其所有相關的資訊都一併刪除。
-                            </p>
-                        </h3>
-                        <div className="flex justify-center gap-4">
-                            <Button
-                                color="failure"
-                                onClick={() => {
-                                    setIsShowDeleteCustomerModel(false)
-                                    if (!targetCustomer.id) {
-                                        return
-                                    }
-                                    deleteCustomer(targetCustomer.id).then(r => {
-                                        setCustomers(prevState => {
-                                            return prevState.filter(c => c.id !== r.id);
-                                        })
-                                    })
-                                }}
-                            >
-                                確認
-                            </Button>
-                            <Button
-                                color="gray"
-                                onClick={() => {
-                                    setIsShowDeleteCustomerModel(false)
-                                }}
-                            >
-                                <p>
-                                    取消
-                                </p>
-                            </Button>
-                        </div>
-                    </div>
-                </Modal.Body>
-            </Modal>
-        </div>
-    )
+              >
+                確認
+              </Button>
+              <Button
+                color="gray"
+                onClick={() => {
+                  setIsShowDeleteCustomerModel(false);
+                }}
+              >
+                <p>取消</p>
+              </Button>
+            </div>
+          </div>
+        </Modal.Body>
+      </Modal>
+    </div>
+  );
 }
 
-export default CustomersPage
+export default CustomersPage;
