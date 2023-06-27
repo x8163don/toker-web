@@ -4,6 +4,7 @@ import CustomersHeader from "../components/customers/CustomersHeader";
 import AddNewCustomerModel from "../components/customers/AddNewCustomerModel";
 import { deleteCustomer, searchCustomers } from "../data/customer/Customer";
 import { Button, Modal, Pagination } from "flowbite-react";
+import SearchFilter from "../components/customers/SearchFilter";
 
 function CustomersPage() {
   const [isShowNewCustomerModel, setIsShowNewCustomerModel] = useState(false);
@@ -12,6 +13,8 @@ function CustomersPage() {
   const [isShowDeleteCustomerModel, setIsShowDeleteCustomerModel] =
     useState(false);
   const [targetCustomer, setTargetCustomer] = useState({});
+
+  const [filter, setFilter] = useState({});
 
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPage, setTotalPage] = useState(1);
@@ -27,12 +30,22 @@ function CustomersPage() {
   const onSaveCustomerHandler = () => {
     searchCustomers({}).then((r) => {
       setCustomers(r.customers);
-      console.log(r);
+      setCurrentPage(r.paginate.page);
+      setTotalPage(r.paginate.total_page);
     });
   };
 
   const onPageChangeHandler = (page) => {
-    searchCustomers({ page: page }).then((r) => {
+    searchCustomers({ ...filter, page: page }).then((r) => {
+      setCustomers(r.customers);
+      setCurrentPage(r.paginate.page);
+      setTotalPage(r.paginate.total_page);
+    });
+  };
+
+  const onApplyFilterHandler = (filter) => {
+    setFilter(filter);
+    searchCustomers(filter).then((r) => {
       setCustomers(r.customers);
       setCurrentPage(r.paginate.page);
       setTotalPage(r.paginate.total_page);
@@ -44,6 +57,8 @@ function CustomersPage() {
       <CustomersHeader
         onClick={() => setIsShowNewCustomerModel(!isShowNewCustomerModel)}
       />
+
+      <SearchFilter onApplyFilter={onApplyFilterHandler} />
 
       <CustomersList
         customers={customers}
