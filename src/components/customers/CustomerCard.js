@@ -10,7 +10,10 @@ import CustomerTag from "./CustomerTag";
 
 const CustomerCard = (props) => {
   const tagContext = useContext(TagContext);
-
+  let compositionLock = {
+    current: false,
+    count: 1,
+  };
   const getDataIntegrityLevel = (dataIntegrity) => {
     if (dataIntegrity >= 90) {
       return {
@@ -27,6 +30,15 @@ const CustomerCard = (props) => {
         color: "failure",
         text: "缺少",
       };
+    }
+  };
+
+  const onComposition = (event) => {
+    if (event.type === "compositionend") {
+      compositionLock.current = false;
+    } else {
+      compositionLock.current = true;
+      compositionLock.count = 0;
     }
   };
 
@@ -115,7 +127,7 @@ const CustomerCard = (props) => {
                       props.onTagChange(oldId, newId)
                     }
                     onTagRemove={(tagId) => props.onTagRemove(tagId)}
-                  ></CustomerTag>
+                  />
                 );
               })}
           </div>
@@ -123,11 +135,21 @@ const CustomerCard = (props) => {
             list="tags"
             type="text"
             placeholder="輸入標籤"
+            onCompositionStart={onComposition}
+            onCompositionUpdate={onComposition}
+            onCompositionEnd={onComposition}
             onKeyUp={(e) => {
-              if (e.keyCode === 13) {
+              if (
+                !compositionLock.current &&
+                compositionLock.count >= 1 &&
+                e.keyCode === 13
+              ) {
                 const name = e.target.value;
                 props.onAddNewTag(name);
                 e.target.value = "";
+                compositionLock.count = 0;
+              } else if (!compositionLock.current && e.keyCode === 13) {
+                compositionLock.count += 1;
               }
             }}
           />
@@ -135,7 +157,7 @@ const CustomerCard = (props) => {
             {tagContext.tags.map((tag) => {
               return (
                 <option key={tag.id}>
-                  {tag.group}/{tag.name}
+                  {tag.group ? `${tag.group}/${tag.name}` : `${tag.name}`}
                 </option>
               );
             })}

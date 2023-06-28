@@ -31,7 +31,9 @@ const CustomerTag = (props) => {
           onBlur={() => setIsShowSameGroupList(false)}
         >
           <span>
-            {currentTag.group}/{currentTag.name}
+            {currentTag.group
+              ? `${currentTag.group}/${currentTag.name}`
+              : `${currentTag.name}`}
           </span>
           <IoIosCloseCircleOutline
             onClick={(e) => {
@@ -53,7 +55,9 @@ const CustomerTag = (props) => {
           {sameGroupTags.map((groupTag, idx) => {
             return (
               <option key={groupTag.id} value={groupTag.id}>
-                {groupTag.group}/{groupTag.name}
+                {groupTag.group
+                  ? `${groupTag.group}/${groupTag.name}`
+                  : `${groupTag.name}`}
               </option>
             );
           })}
