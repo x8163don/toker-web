@@ -5,6 +5,7 @@ import AddNewCustomerModel from "../components/customers/AddNewCustomerModel";
 import { deleteCustomer, searchCustomers } from "../data/customer/Customer";
 import { Button, Modal, Pagination } from "flowbite-react";
 import SearchFilter from "../components/customers/SearchFilter";
+import { TagContextProvider } from "../store/TagContext";
 
 function CustomersPage() {
   const [isShowNewCustomerModel, setIsShowNewCustomerModel] = useState(false);
@@ -52,31 +53,44 @@ function CustomersPage() {
     });
   };
 
+  const onCustomerChange = (id) => {
+    searchCustomers({ ...filter, page: currentPage }).then((r) => {
+      setCustomers(r.customers);
+      setCurrentPage(r.paginate.page);
+      setTotalPage(r.paginate.total_page);
+    });
+  };
+
   return (
     <div className="w-full flex flex-col items-center">
-      <CustomersHeader
-        onClick={() => setIsShowNewCustomerModel(!isShowNewCustomerModel)}
-      />
+      <TagContextProvider>
+        <CustomersHeader
+          onClick={() => setIsShowNewCustomerModel(!isShowNewCustomerModel)}
+        />
 
-      <SearchFilter onApplyFilter={onApplyFilterHandler} />
+        <SearchFilter onApplyFilter={onApplyFilterHandler} />
 
-      <CustomersList
-        customers={customers}
-        onDeleteCustomer={(id) => {
-          setTargetCustomer(customers.find((c) => c.id === id));
-          setIsShowDeleteCustomerModel(true);
-        }}
-      />
+        <CustomersList
+          customers={customers}
+          onDeleteCustomer={(id) => {
+            setTargetCustomer(customers.find((c) => c.id === id));
+            setIsShowDeleteCustomerModel(true);
+          }}
+          onCustomerChange={(id) => {
+            onCustomerChange(id);
+          }}
+        />
 
-      <Pagination
-        layout="pagination"
-        showIcons
-        currentPage={currentPage}
-        totalPages={totalPage}
-        onPageChange={onPageChangeHandler}
-        previousLabel=""
-        nextLabel=""
-      />
+        <Pagination
+          layout="pagination"
+          showIcons
+          currentPage={currentPage}
+          totalPages={totalPage}
+          onPageChange={onPageChangeHandler}
+          previousLabel=""
+          nextLabel=""
+        />
+      </TagContextProvider>
 
       <Modal
         show={isShowNewCustomerModel}

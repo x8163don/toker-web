@@ -1,12 +1,16 @@
-import _ from "lodash";
+import React, { useContext } from "react";
 import { Card, Avatar, Label, Badge } from "flowbite-react";
-import React from "react";
+import _ from "lodash";
 import { DateTime } from "luxon";
 import { getAge } from "../../utils/Age";
 import { Link } from "react-router-dom";
 import { Gender } from "../../contants/Gender";
+import { TagContext } from "../../store/TagContext";
+import CustomerTag from "./CustomerTag";
 
 const CustomerCard = (props) => {
+  const tagContext = useContext(TagContext);
+
   const getDataIntegrityLevel = (dataIntegrity) => {
     if (dataIntegrity >= 90) {
       return {
@@ -97,10 +101,45 @@ const CustomerCard = (props) => {
         </div>
 
         <div className="ml-6 w-24">
-          <Label value="近期歷程"></Label>
-          <p className="text-sm text-gray-500 dark:text-gray-400">
-            {_.get(props, "customer.history", "")}
-          </p>
+          <Label>標籤</Label>
+          <div>
+            {tagContext
+              .getExistTagIds(_.get(props, "customer.tag_ids", []))
+              .map((tagId) => {
+                const tag = tagContext.getTagById(tagId);
+                return (
+                  <CustomerTag
+                    key={tag.id}
+                    tag={tag}
+                    onTagChange={(oldId, newId) =>
+                      props.onTagChange(oldId, newId)
+                    }
+                    onTagRemove={(tagId) => props.onTagRemove(tagId)}
+                  ></CustomerTag>
+                );
+              })}
+          </div>
+          <input
+            list="tags"
+            type="text"
+            placeholder="輸入標籤"
+            onKeyUp={(e) => {
+              if (e.keyCode === 13) {
+                const name = e.target.value;
+                props.onAddNewTag(name);
+                e.target.value = "";
+              }
+            }}
+          />
+          <datalist id="tags">
+            {tagContext.tags.map((tag) => {
+              return (
+                <option key={tag.id}>
+                  {tag.group}/{tag.name}
+                </option>
+              );
+            })}
+          </datalist>
         </div>
 
         <div className="ml-auto">

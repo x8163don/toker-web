@@ -92,3 +92,48 @@ export const getUploadInfo = async (id, filename) => {
   );
   return axiosResponse.data;
 };
+
+export const addTag = async (customerId, tagId) => {
+  const axiosResponse = await axios.post(
+    `/customer/${customerId}/tag:add`,
+    { tag_id: tagId },
+    {
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `${localStorage.getItem("token")}`,
+      },
+    }
+  );
+  return axiosResponse.data;
+};
+
+export const changeTag = async (customerId, oldTagId, newTagId) => {
+  const axiosResponse = await axios.post(
+    `/customer/${customerId}/tag:change`,
+    {
+      old_tag_id: oldTagId,
+      new_tag_id: newTagId,
+    },
+    {
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `${localStorage.getItem("token")}`,
+      },
+    }
+  );
+  return axiosResponse.data;
+};
+
+export const removeTag = async (customerId, tagId) => {
+  const axiosResponse = await axios.post(
+    `/customer/${customerId}/tag:remove`,
+    { tag_id: tagId },
+    {
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `${localStorage.getItem("token")}`,
+      },
+    }
+  );
+  return axiosResponse.data;
+};
