@@ -1,5 +1,5 @@
 import React, { useContext } from "react";
-import { Card, Avatar, Label, Badge } from "flowbite-react";
+import { Card, Avatar, Label, Badge, TextInput } from "flowbite-react";
 import _ from "lodash";
 import { DateTime } from "luxon";
 import { getAge } from "../../utils/Age";
@@ -62,7 +62,7 @@ const CustomerCard = (props) => {
             {_.get(props, "customer.name", "")}
           </h5>
         </div>
-        <div className="ml-6 w-24">
+        <div className="ml-6 w-48">
           <Label value="生日"></Label>
           <p className="text-sm text-gray-500 dark:text-gray-400">
             {(function () {
@@ -95,7 +95,7 @@ const CustomerCard = (props) => {
           </p>
         </div>
 
-        <div className="ml-6 w-24">
+        <div className="ml-6 w-32">
           <Label value="資料完整度"></Label>
           <Badge
             className="w-fit"
@@ -112,29 +112,12 @@ const CustomerCard = (props) => {
           </Badge>
         </div>
 
-        <div className="ml-6 w-24">
-          <Label>標籤</Label>
-          <div>
-            {tagContext
-              .getExistTagIds(_.get(props, "customer.tag_ids", []))
-              .map((tagId) => {
-                const tag = tagContext.getTagById(tagId);
-                return (
-                  <CustomerTag
-                    key={tag.id}
-                    tag={tag}
-                    onTagChange={(oldId, newId) =>
-                      props.onTagChange(oldId, newId)
-                    }
-                    onTagRemove={(tagId) => props.onTagRemove(tagId)}
-                  />
-                );
-              })}
-          </div>
-          <input
+        <div className="pl-6 pr-6 w-full">
+          <TextInput
             list="tags"
             type="text"
-            placeholder="輸入標籤"
+            placeholder="新標籤"
+            className="mb-2 w-32"
             onCompositionStart={onComposition}
             onCompositionUpdate={onComposition}
             onCompositionEnd={onComposition}
@@ -162,9 +145,26 @@ const CustomerCard = (props) => {
               );
             })}
           </datalist>
+          <div className="w-full flex flex-row flex-wrap">
+            {tagContext
+              .getExistTagIds(_.get(props, "customer.tag_ids", []))
+              .map((tagId) => {
+                const tag = tagContext.getTagById(tagId);
+                return (
+                  <CustomerTag
+                    key={tag.id}
+                    tag={tag}
+                    onTagChange={(oldId, newId) =>
+                      props.onTagChange(oldId, newId)
+                    }
+                    onTagRemove={(tagId) => props.onTagRemove(tagId)}
+                  />
+                );
+              })}
+          </div>
         </div>
 
-        <div className="ml-auto">
+        <div className="ml-auto w-14">
           <Link
             className="font-medium cursor-pointer text-cyan-600 hover:underline dark:text-cyan-500"
             to={`/customers/${props.customer.id}`}

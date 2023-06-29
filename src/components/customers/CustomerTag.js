@@ -23,18 +23,18 @@ const CustomerTag = (props) => {
     <Fragment>
       {!isShowSameGroupList && (
         <Badge
-          className="mr-2 mb-2"
-          size="md"
+          className="mr-2 mb-2 w-fit"
+          size="sm"
           onClick={() => {
             setIsShowSameGroupList(true);
           }}
           onBlur={() => setIsShowSameGroupList(false)}
         >
-          <span>
+          <p className="inline-block">
             {currentTag.group
               ? `${currentTag.group}/${currentTag.name}`
               : `${currentTag.name}`}
-          </span>
+          </p>
           <IoIosCloseCircleOutline
             onClick={(e) => {
               e.stopPropagation();
