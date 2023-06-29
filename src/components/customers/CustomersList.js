@@ -31,17 +31,17 @@ const CustomersList = (props) => {
             key={customer.id}
             customer={customer}
             onTagChange={(oldId, newId) => {
-              onTagChangeHandler(customer.id, oldId, newId).then((r) =>
+              onTagChangeHandler(customer.id, oldId, newId).then(() =>
                 props.onCustomerChange(customer.id)
               );
             }}
             onTagRemove={(tagId) => {
-              onTagRemoveHandler(customer.id, tagId).then((r) =>
+              onTagRemoveHandler(customer.id, tagId).then(() =>
                 props.onCustomerChange(customer.id)
               );
             }}
             onAddNewTag={(name) =>
-              onAddNewTagHandler(customer.id, name).then((r) =>
+              onAddNewTagHandler(customer.id, name).then(() =>
                 props.onCustomerChange(customer.id)
               )
             }

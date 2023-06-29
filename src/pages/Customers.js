@@ -53,7 +53,7 @@ function CustomersPage() {
     });
   };
 
-  const onCustomerChange = (id) => {
+  const onCustomerChange = () => {
     searchCustomers({ ...filter, page: currentPage }).then((r) => {
       setCustomers(r.customers);
       setCurrentPage(r.paginate.page);

@@ -52,7 +52,7 @@ const CustomerTag = (props) => {
             changeTagHandler(currentTag.id, e.target.value);
           }}
         >
-          {sameGroupTags.map((groupTag, idx) => {
+          {sameGroupTags.map((groupTag) => {
             return (
               <option key={groupTag.id} value={groupTag.id}>
                 {groupTag.group

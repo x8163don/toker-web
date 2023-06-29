@@ -3,11 +3,11 @@ import { addTag, getTags } from "../data/tag/Tag";
 
 export const TagContext = React.createContext({
   tags: [],
-  getTagById: (id) => {},
-  getExistTag: (ids) => {},
-  getSameGroupTags: (id) => {},
-  getTagByFullName: (name) => {},
-  onAddTag: (name) => {},
+  getTagById: () => {},
+  getExistTag: () => {},
+  getSameGroupTags: () => {},
+  getTagByFullName: () => {},
+  onAddTag: () => {},
   onRemoveTag: () => {},
 });
 
