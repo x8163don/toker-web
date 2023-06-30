@@ -21,7 +21,7 @@ function CustomersPage() {
   const [totalPage, setTotalPage] = useState(1);
 
   useEffect(() => {
-    searchCustomers().then((r) => {
+    searchCustomers(filter).then((r) => {
       setCustomers(r.customers);
       setCurrentPage(r.paginate.page);
       setTotalPage(r.paginate.total_page);
@@ -29,7 +29,7 @@ function CustomersPage() {
   }, []);
 
   const onSaveCustomerHandler = () => {
-    searchCustomers({}).then((r) => {
+    searchCustomers(filter).then((r) => {
       setCustomers(r.customers);
       setCurrentPage(r.paginate.page);
       setTotalPage(r.paginate.total_page);
@@ -37,7 +37,7 @@ function CustomersPage() {
   };
 
   const onPageChangeHandler = (page) => {
-    searchCustomers({ ...filter, page: page }).then((r) => {
+    searchCustomers({ ...filter, page }).then((r) => {
       setCustomers(r.customers);
       setCurrentPage(r.paginate.page);
       setTotalPage(r.paginate.total_page);
@@ -62,34 +62,36 @@ function CustomersPage() {
   };
 
   return (
-    <div className="w-full flex flex-col items-center">
+    <div className="w-full flex flex-row">
       <TagContextProvider>
-        <CustomersHeader
-          onClick={() => setIsShowNewCustomerModel(!isShowNewCustomerModel)}
-        />
-
         <SearchFilter onApplyFilter={onApplyFilterHandler} />
 
-        <CustomersList
-          customers={customers}
-          onDeleteCustomer={(id) => {
-            setTargetCustomer(customers.find((c) => c.id === id));
-            setIsShowDeleteCustomerModel(true);
-          }}
-          onCustomerChange={(id) => {
-            onCustomerChange(id);
-          }}
-        />
+        <div className="w-full flex flex-col ml-12">
+          <CustomersHeader
+            onClick={() => setIsShowNewCustomerModel(!isShowNewCustomerModel)}
+          />
 
-        <Pagination
-          layout="pagination"
-          showIcons
-          currentPage={currentPage}
-          totalPages={totalPage}
-          onPageChange={onPageChangeHandler}
-          previousLabel=""
-          nextLabel=""
-        />
+          <CustomersList
+            customers={customers}
+            onDeleteCustomer={(id) => {
+              setTargetCustomer(customers.find((c) => c.id === id));
+              setIsShowDeleteCustomerModel(true);
+            }}
+            onCustomerChange={(id) => {
+              onCustomerChange(id);
+            }}
+          />
+
+          <Pagination
+            layout="pagination"
+            showIcons
+            currentPage={currentPage}
+            totalPages={totalPage}
+            onPageChange={onPageChangeHandler}
+            previousLabel=""
+            nextLabel=""
+          />
+        </div>
       </TagContextProvider>
 
       <Modal

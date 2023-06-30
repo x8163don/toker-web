@@ -1,5 +1,6 @@
 import axios from "axios";
 import _ from "lodash";
+import qs from "qs";
 
 export const getCustomer = async (id) => {
   let axiosResponse = await axios.get(`/customer/${id}`, {
@@ -28,15 +29,22 @@ export const searchCustomers = async (filter) => {
     page: 1,
     phone: "",
     city: "",
-    tag_ids: [],
     district: "",
     order_by: "",
   };
 
   _.merge(defaultFilter, filter);
+  Object.keys(defaultFilter).forEach((key) => {
+    if (defaultFilter[key] === "") {
+      delete defaultFilter[key];
+    }
+  });
 
   let axiosResponse = await axios.get(`/customers:search`, {
     params: defaultFilter,
+    paramsSerializer: (params) => {
+      return qs.stringify(params, { arrayFormat: "repeat" });
+    },
     headers: {
       "Content-Type": "application/json",
       Authorization: `${localStorage.getItem("token")}`,
